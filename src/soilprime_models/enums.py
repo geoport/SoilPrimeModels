@@ -1,5 +1,3 @@
-"""Enums module for SoilPy."""
-
 from enum import Enum
 
 

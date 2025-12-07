@@ -1,5 +1,3 @@
-"""MASW (Multichannel Analysis of Surface Waves) model for SoilPy."""
-
 from typing import List, Optional
 
 from pydantic import BaseModel, Field

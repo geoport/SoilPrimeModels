@@ -1,8 +1,6 @@
-"""Loads model for SoilPy."""
-
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from .enums import LoadCase, SelectionMethod
 from .validation import ValidationError, validate_field

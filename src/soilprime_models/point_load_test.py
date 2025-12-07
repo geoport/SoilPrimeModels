@@ -1,6 +1,4 @@
-"""Point Load Test model for SoilPy."""
-
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -15,7 +13,7 @@ class PointLoadSample(BaseModel):
         depth: Depth of the sample in meters
         sample_no: Optional identifier number for the tested sample
         p: Optional applied load at failure in kiloNewtons (kN)
-        is: Optional point load strength index in MegaPascals (MPa)
+        is_: Optional point load strength index in MegaPascals (MPa)
         f: Optional size correction factor
         is50: Corrected point load strength index to 50 mm diameter in MegaPascals (MPa)
         l: Optional distance between load application points in millimeters (mm)
@@ -25,7 +23,7 @@ class PointLoadSample(BaseModel):
     depth: Optional[float] = None
     sample_no: Optional[int] = None
     p: Optional[float] = None
-    is_value: Optional[float] = None
+    is_: Optional[float] = None
     f: Optional[float] = None
     is50: Optional[float] = None
     l: Optional[float] = None
@@ -67,7 +65,7 @@ class PointLoadSample(BaseModel):
                 validate_field("p", self.p, 0.0001, error_code_prefix="point_load_test")
             elif field == "is":
                 validate_field(
-                    "is", self.is_value, 0.00001, error_code_prefix="point_load_test"
+                    "is", self.is_, 0.00001, error_code_prefix="point_load_test"
                 )
             elif field == "f":
                 validate_field(

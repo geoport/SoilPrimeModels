@@ -1,6 +1,4 @@
-"""Soil profile model for SoilPy."""
-
-from typing import List, Optional
+from typing import Any, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -16,7 +14,7 @@ class SoilLayer(BaseModel):
     conditions for comprehensive modeling.
     """
 
-    soil_classification: Optional[str] = None  # e.g., "CLAY", "SAND", "SILT"
+    soil_class: Optional[str] = None  # e.g., "CLAY", "SAND", "SILT"
     thickness: Optional[float] = None  # meter
     natural_unit_weight: Optional[float] = None  # t/m³
     dry_unit_weight: Optional[float] = None  # t/m³
@@ -41,6 +39,8 @@ class SoilLayer(BaseModel):
     preconsolidation_pressure: Optional[float] = None  # t/m²
     mv: Optional[float] = None  # volume compressibility coefficient in m²/t
     shear_wave_velocity: Optional[float] = None  # m/s
+    geologic_texture_image: Optional[Any] = ""
+    geologic_texture: Optional[str] = ""
 
     @classmethod
     def new(cls, thickness: float) -> "SoilLayer":
@@ -225,6 +225,11 @@ class SoilProfile(BaseModel):
 
     layers: List[SoilLayer] = Field(default_factory=list)
     ground_water_level: Optional[float] = None  # meters
+    no_gwt: Optional[bool] = None
+    contains_tick_clay_layer: Optional[bool] = None
+    contains_high_plasticity_clay: Optional[bool] = None
+    contains_soft_clay: Optional[bool] = None
+    contains_sensitive_clay: Optional[bool] = None
 
     def model_post_init(self, __context) -> None:
         """Initialize layer depths after object creation."""

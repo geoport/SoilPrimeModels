@@ -1,5 +1,3 @@
-"""CPT (Cone Penetration Test) model for SoilPy."""
-
 from typing import List, Optional
 
 from pydantic import BaseModel, Field

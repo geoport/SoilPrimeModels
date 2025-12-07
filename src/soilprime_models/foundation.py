@@ -1,8 +1,6 @@
-"""Foundation model for SoilPy."""
-
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from .validation import ValidationError, validate_field
 
@@ -11,6 +9,7 @@ class Foundation(BaseModel):
     """Represents a foundation with geometry and load effects.
 
     Attributes:
+        foundation_type: Type of the foundation (e.g., "spread", "mat", "pile")
         foundation_depth: Depth of the foundation (m)
         foundation_length: Length of the foundation (m)
         foundation_width: Width of the foundation (m)
@@ -22,6 +21,7 @@ class Foundation(BaseModel):
         surface_friction_coefficient: Friction coefficient for horizontal sliding (unitless)
     """
 
+    foundation_type: Optional[str] = ""
     foundation_depth: Optional[float] = None
     foundation_length: Optional[float] = None
     foundation_width: Optional[float] = None
@@ -31,10 +31,12 @@ class Foundation(BaseModel):
     effective_length: Optional[float] = None
     effective_width: Optional[float] = None
     surface_friction_coefficient: Optional[float] = None
+    is_below_gwt: Optional[bool] = None
 
     @classmethod
     def new(
         cls,
+        type: str = "",
         depth: Optional[float] = None,
         length: Optional[float] = None,
         width: Optional[float] = None,
@@ -42,10 +44,12 @@ class Foundation(BaseModel):
         slope: Optional[float] = None,
         area: Optional[float] = None,
         surface_friction_coefficient: Optional[float] = None,
+        is_below_gwt: Optional[bool] = None,
     ) -> "Foundation":
         """Creates a new Foundation instance.
 
         Args:
+            type: Type of the foundation
             depth: Depth of the foundation (m)
             length: Length of the foundation (m)
             width: Width of the foundation (m)
@@ -53,11 +57,13 @@ class Foundation(BaseModel):
             slope: Slope angle of the ground (degrees)
             area: Area of the foundation (m²)
             surface_friction_coefficient: Friction coefficient for horizontal sliding
+            is_below_gwt: Indicates if the foundation is below the groundwater table
 
         Returns:
             A new Foundation instance
         """
         return cls(
+            foundation_type=type,
             foundation_depth=depth,
             foundation_length=length,
             foundation_width=width,
@@ -67,6 +73,7 @@ class Foundation(BaseModel):
             effective_length=None,
             effective_width=None,
             surface_friction_coefficient=surface_friction_coefficient,
+            is_below_gwt=is_below_gwt,
         )
 
     def calc_effective_lengths(self, ex: float, ey: float) -> None:

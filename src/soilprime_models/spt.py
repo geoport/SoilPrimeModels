@@ -1,5 +1,3 @@
-"""SPT (Standard Penetration Test) model for SoilPy."""
-
 import math
 from typing import List, Optional, Union
 
@@ -38,36 +36,36 @@ class NValue(BaseModel):
 
     def to_i32(self) -> int:
         """Converts to int (50 for refusals)."""
-        if self.value == "R":
+        if isinstance(self.value, str):
             return 50
         return self.value
 
     def to_option(self) -> Optional[int]:
         """Converts to Optional[int], treating Refusal as 50."""
-        if self.value == "R":
+        if isinstance(self.value, str):
             return 50
         return self.value
 
     def mul_by_f64(self, factor: float) -> "NValue":
         """Multiply by a factor."""
-        if self.value == "R":
+        if isinstance(self.value, str):
             return NValue(value="R")
         return NValue(value=int(math.ceil(self.value * factor)))
 
     def sum_with(self, other: "NValue") -> "NValue":
         """Sum up with another NValue."""
-        if self.value == "R" or other.value == "R":
+        if isinstance(self.value, str) or isinstance(other.value, str):
             return NValue(value="R")
         return NValue(value=self.value + other.value)
 
     def add_f64(self, other: float) -> "NValue":
         """Sum up with a float."""
-        if self.value == "R":
+        if isinstance(self.value, str):
             return NValue(value="R")
         return NValue(value=int(math.ceil(self.value + other)))
 
     def __str__(self) -> str:
-        if self.value == "R":
+        if isinstance(self.value, str):
             return "R"
         return str(self.value)
 
@@ -79,11 +77,11 @@ class NValue(BaseModel):
     def __lt__(self, other) -> bool:
         if not isinstance(other, NValue):
             return NotImplemented
-        if self.value == "R" and other.value == "R":
+        if isinstance(self.value, str) and isinstance(other.value, str):
             return False
-        if self.value == "R":
+        if isinstance(self.value, str):
             return False
-        if other.value == "R":
+        if isinstance(other.value, str):
             return True
         return self.value < other.value
 
